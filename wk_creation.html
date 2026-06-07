@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>W&K Creation — Votre Boutique En Ligne</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --or: #C9A84C;
+    --or-light: #E8C96A;
+    --or-dark: #A07C2E;
+    --noir: #0D0D0D;
+    --noir2: #141414;
+    --noir3: #1E1E1E;
+    --blanc: #F5F0E8;
+    --gris: #888;
+    --gris2: #555;
+    --rouge: #E05252;
+    --vert: #4CAF7D;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--noir);
+    color: var(--blanc);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--or);
+    letter-spacing: 2px;
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--blanc); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+  }
+
+  nav ul a {
+    color: var(--gris);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  nav ul a:hover { color: var(--or); }
+
+  .nav-cta {
+    background: var(--or);
+    color: var(--noir) !important;
+    padding: 10px 24px;
+    border-radius: 2px;
+    font-weight: 600 !important;
+    transition: background 0.3s !important;
+  }
+
+  .nav-cta:hover { background: var(--or-light) !important; color: var(--noir) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%);
+  }
+
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--or);
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 30px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .hero h1 .gold { color: var(--or); }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--gris);
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0 auto 50px;
+    font-weight: 300;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--or);
+    color: var(--noir);
+    padding: 16px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--or-light);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(201,168,76,0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--blanc);
+    padding: 16px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--or);
+    color: var(--or);
+  }
+
+  /* STATS */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(201,168,76,0.1);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .stat {
+    background: var(--noir);
+    padding: 50px 40px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--or);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    color: var(--gris);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* SECTIONS COMMUNES */
+  section { padding: 100px 60px; }
+
+  .section-tag {
+    display: inline-block;
+    color: var(--or);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .section-sub {
+    color: var(--gris);
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  /* COMMENT ÇA MARCHE */
+  #comment {
+    background: var(--noir2);
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+    margin-top: 60px;
+    background: rgba(201,168,76,0.08);
+  }
+
+  .step {
+    background: var(--noir2);
+    padding: 50px 35px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .step:hover { background: var(--noir3); }
+
+  .step::before {
+    content: attr(data-num);
+    position: absolute;
+    top: -10px; right: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 7rem;
+    font-weight: 900;
+    color: rgba(201,168,76,0.05);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .step-icon {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .step h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: var(--blanc);
+  }
+
+  .step p {
+    color: var(--gris);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* PRICING */
+  #tarifs { background: var(--noir); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2px;
+    margin-top: 60px;
+    background: rgba(201,168,76,0.1);
+    max-width: 900px;
+  }
+
+  .pricing-card {
+    background: var(--noir2);
+    padding: 50px 40px;
+    position: relative;
+  }
+
+  .pricing-card.featured {
+    background: var(--noir3);
+    border-top: 3px solid var(--or);
+  }
+
+  .pricing-badge {
+    display: inline-block;
+    background: var(--or);
+    color: var(--noir);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    margin-bottom: 20px;
+  }
+
+  .pricing-name {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--gris);
+    margin-bottom: 20px;
+  }
+
+  .pricing-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--or);
+    margin-bottom: 4px;
+  }
+
+  .pricing-price span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--gris);
+    font-weight: 300;
+  }
+
+  .pricing-desc {
+    color: var(--gris);
+    font-size: 0.85rem;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-weight: 300;
+  }
+
+  .pricing-features {
+    list-style: none;
+    margin-bottom: 40px;
+  }
+
+  .pricing-features li {
+    padding: 10px 0;
+    font-size: 0.9rem;
+    color: var(--gris);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-weight: 300;
+  }
+
+  .pricing-features li::before {
+    content: '—';
+    color: var(--or);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* INSCRIPTION */
+  #inscription {
+    background: var(--noir2);
+  }
+
+  .form-wrapper {
+    max-width: 640px;
+    margin: 60px auto 0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  .form-group label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gris);
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--blanc);
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+    width: 100%;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--or);
+    background: rgba(201,168,76,0.05);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: var(--gris2);
+  }
+
+  .form-group select option {
+    background: var(--noir3);
+    color: var(--blanc);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .plan-select {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .plan-option {
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .plan-option:hover { border-color: rgba(201,168,76,0.4); }
+
+  .plan-option.selected {
+    border-color: var(--or);
+    background: rgba(201,168,76,0.06);
+  }
+
+  .plan-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .plan-option-name {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gris);
+    margin-bottom: 6px;
+  }
+
+  .plan-option-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--or);
+    font-weight: 700;
+  }
+
+  .plan-option-price small {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: var(--gris);
+    font-weight: 300;
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--or);
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  .checkbox-group label {
+    font-size: 0.85rem;
+    color: var(--gris);
+    cursor: pointer;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .checkbox-group label a { color: var(--or); text-decoration: none; }
+
+  .form-submit {
+    width: 100%;
+    padding: 18px;
+    background: var(--or);
+    color: var(--noir);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-submit:hover {
+    background: var(--or-light);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+  }
+
+  .form-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .form-message {
+    margin-top: 16px;
+    padding: 14px 20px;
+    font-size: 0.9rem;
+    display: none;
+    font-weight: 400;
+  }
+
+  .form-message.success {
+    background: rgba(76,175,125,0.1);
+    border: 1px solid rgba(76,175,125,0.3);
+    color: var(--vert);
+    display: block;
+  }
+
+  .form-message.error {
+    background: rgba(224,82,82,0.1);
+    border: 1px solid rgba(224,82,82,0.3);
+    color: var(--rouge);
+    display: block;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--noir);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 60px;
+  }
+
+  .footer-brand .logo { font-size: 1.3rem; display: block; margin-bottom: 16px; }
+
+  .footer-brand p {
+    color: var(--gris);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .footer-col h4 {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--or);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li {
+    margin-bottom: 10px;
+    color: var(--gris);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .footer-col ul li:hover { color: var(--blanc); }
+
+  .footer-bottom {
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--gris2);
+    font-size: 0.8rem;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* LOADING SPINNER */
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(13,13,13,0.3);
+    border-top-color: var(--noir);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    nav ul { display: none; }
+    section { padding: 70px 24px; }
+    .stats { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .plan-select { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr; padding: 40px 24px; gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+    .hero h1 { font-size: 2.5rem; }
+  }
+
+  /* SCROLL BAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--noir); }
+  ::-webkit-scrollbar-thumb { background: var(--or-dark); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+    margin: 0 60px;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">W<span>&</span>K <span style="color:var(--blanc)">Creation</span></a>
+  <ul>
+    <li><a href="#comment">Comment ça marche</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#inscription" class="nav-cta">Commencer</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Agence e-commerce • Abidjan, Côte d'Ivoire</div>
+    <h1>Votre boutique en ligne,<br><span class="gold">clé en main.</span></h1>
+    <p>W&K Creation crée votre site e-commerce professionnel pour vendre vos produits en ligne. Paiement Wave, Orange Money & MTN MoMo intégré dès le premier jour.</p>
+    <div class="hero-btns">
+      <a href="#inscription" class="btn-primary">Créer ma boutique</a>
+      <a href="#comment" class="btn-secondary">Voir comment ça marche</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat reveal">
+    <span class="stat-num">48h</span>
+    <span class="stat-label">Délai de démarrage</span>
+  </div>
+  <div class="stat reveal">
+    <span class="stat-num">3</span>
+    <span class="stat-label">Moyens de paiement intégrés</span>
+  </div>
+  <div class="stat reveal">
+    <span class="stat-num">100%</span>
+    <span class="stat-label">Mobile-first & rapide</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- COMMENT ÇA MARCHE -->
+<section id="comment">
+  <div class="reveal">
+    <span class="section-tag">Processus</span>
+    <h2 class="section-title">Simple. Rapide.<br>Efficace.</h2>
+    <p class="section-sub">De l'inscription à la première vente, nous gérons tout pour vous.</p>
+  </div>
+  <div class="steps-grid" style="margin-top:60px">
+    <div class="step reveal" data-num="1">
+      <span class="step-icon">📝</span>
+      <h3>Inscription en ligne</h3>
+      <p>Remplissez le formulaire d'inscription et choisissez votre plan. Paiement sécurisé via Wave ou Orange Money.</p>
+    </div>
+    <div class="step reveal" data-num="2">
+      <span class="step-icon">🎨</span>
+      <h3>Création de votre site</h3>
+      <p>Notre équipe crée votre boutique personnalisée sous 7 à 14 jours ouvrables. Design professionnel, adapté à votre univers.</p>
+    </div>
+    <div class="step reveal" data-num="3">
+      <span class="step-icon">✅</span>
+      <h3>Validation & mise en ligne</h3>
+      <p>Vous validez le résultat, nous mettons en ligne. Votre URL personnalisée est active et prête à recevoir des commandes.</p>
+    </div>
+    <div class="step reveal" data-num="4">
+      <span class="step-icon">📦</span>
+      <h3>Gérez & vendez</h3>
+      <p>Commandes, stock, paiements — tout est automatisé. Nous assurons la maintenance et les mises à jour chaque mois.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TARIFS -->
+<section id="tarifs">
+  <div class="reveal">
+    <span class="section-tag">Tarifs</span>
+    <h2 class="section-title">Transparent.<br>Sans surprise.</h2>
+    <p class="section-sub">Un paiement unique pour la création, puis un abonnement mensuel pour tout gérer.</p>
+  </div>
+
+  <div class="pricing-grid reveal">
+    <div class="pricing-card">
+      <div class="pricing-name">Création du site</div>
+      <div class="pricing-price">150 000 <span>FCFA</span></div>
+      <p class="pricing-desc">Paiement unique — à régler avant le début des travaux</p>
+      <ul class="pricing-features">
+        <li>Site e-commerce complet & personnalisé</li>
+        <li>Catalogue produits illimité</li>
+        <li>Paiement Wave / Orange Money / MTN MoMo</li>
+        <li>Design mobile-first</li>
+        <li>URL personnalisée (.ci ou .com)</li>
+        <li>Notifications WhatsApp des commandes</li>
+        <li>Tableau de bord vendeur</li>
+      </ul>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Mensuel</div>
+      <div class="pricing-name">Abonnement maintenance</div>
+      <div class="pricing-price">15 000 <span>FCFA/mois</span></div>
+      <p class="pricing-desc">Reconduit automatiquement chaque mois</p>
+      <ul class="pricing-features">
+        <li>Hébergement & site en ligne 24h/24</li>
+        <li>10 ajouts de produits par mois</li>
+        <li>Modifications de prix illimitées</li>
+        <li>5 modifications de photos/mois</li>
+        <li>1 modification de design/mois</li>
+        <li>Support WhatsApp sous 24h</li>
+        <li>Corrections de bugs incluses</li>
+      </ul>
+      <a href="#inscription" class="btn-primary" style="display:block;text-align:center">Commencer maintenant</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FORMULAIRE INSCRIPTION -->
+<section id="inscription">
+  <div style="text-align:center" class="reveal">
+    <span class="section-tag">Inscription</span>
+    <h2 class="section-title">Créez votre compte<br><span style="color:var(--or)">W&K Creation</span></h2>
+    <p class="section-sub" style="margin:0 auto">Remplissez le formulaire ci-dessous. Notre équipe vous contacte sous 24h pour démarrer votre projet.</p>
+  </div>
+
+  <div class="form-wrapper reveal">
+
+    <!-- CHOIX DU PLAN -->
+    <div style="margin-bottom:24px">
+      <label style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--gris);font-weight:500;display:block;margin-bottom:12px">Choisissez votre plan</label>
+      <div class="plan-select" id="planSelect">
+        <label class="plan-option selected" id="planCreation">
+          <input type="radio" name="plan" value="creation_abonnement" checked>
+          <div class="plan-option-name">Création + Abonnement</div>
+          <div class="plan-option-price">150 000 <small>FCFA + 15 000/mois</small></div>
+        </label>
+        <label class="plan-option" id="planAbonnement">
+          <input type="radio" name="plan" value="abonnement_seul">
+          <div class="plan-option-name">Abonnement seul</div>
+          <div class="plan-option-price">15 000 <small>FCFA/mois</small></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- FORMULAIRE -->
+    <form id="inscriptionForm" novalidate>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="prenom">Prénom *</label>
+          <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required>
+        </div>
+        <div class="form-group">
+          <label for="nom">Nom *</label>
+          <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Adresse email *</label>
+          <input type="email" id="email" name="email" placeholder="vous@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="whatsapp">Numéro WhatsApp *</label>
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="+225 07 00 00 00 00" required>
+        </div>
+        <div class="form-group full">
+          <label for="password">Mot de passe *</label>
+          <input type="password" id="password" name="password" placeholder="Minimum 8 caractères" required minlength="8">
+        </div>
+        <div class="form-group full">
+          <label for="activite">Votre activité / domaine *</label>
+          <select id="activite" name="activite" required>
+            <option value="" disabled selected>Sélectionnez votre domaine</option>
+            <option value="mode">Mode & Vêtements</option>
+            <option value="cosmetiques">Cosmétiques & Beauté</option>
+            <option value="alimentation">Alimentation & Traiteur</option>
+            <option value="accessoires">Accessoires & Bijoux</option>
+            <option value="electronique">Électronique & Tech</option>
+            <option value="artisanat">Artisanat & Décoration</option>
+            <option value="sport">Sport & Bien-être</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="description">Décrivez brièvement votre boutique</label>
+          <textarea id="description" name="description" placeholder="Ex : Je vends des vêtements femme de qualité, importés de Dubaï..."></textarea>
+        </div>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="cgv" name="cgv" required>
+        <label for="cgv">J'accepte les <a href="#">conditions générales de vente</a> et la <a href="#">politique de confidentialité</a> de W&K Creation.</label>
+      </div>
+
+      <button type="submit" class="form-submit" id="submitBtn">
+        Créer mon compte
+      </button>
+
+      <div class="form-message" id="formMessage"></div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="logo">W<span style="color:var(--or)">&</span>K Creation</a>
+    <p>Votre agence e-commerce à Abidjan. Nous créons des boutiques en ligne professionnelles pour les créateurs de contenu et entrepreneurs d'Afrique de l'Ouest.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Navigation</h4>
+    <ul>
+      <li onclick="document.getElementById('comment').scrollIntoView({behavior:'smooth'})">Comment ça marche</li>
+      <li onclick="document.getElementById('tarifs').scrollIntoView({behavior:'smooth'})">Tarifs</li>
+      <li onclick="document.getElementById('inscription').scrollIntoView({behavior:'smooth'})">S'inscrire</li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <ul>
+      <li>📱 WhatsApp : +225 00 00 00 00</li>
+      <li>📧 contact@wkcreation.ci</li>
+      <li>📍 Abidjan, Côte d'Ivoire</li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 W&K Creation. Tous droits réservés.</span>
+    <span>Paiement sécurisé — Wave · Orange Money · MTN MoMo</span>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+// CONFIGURATION BASE DE DONNÉES
+// À remplacer par vos vraies clés Supabase
+// ═══════════════════════════════════════════════
+const DB_CONFIG = {
+  SUPABASE_URL: 'https://upaewkcazpvidzlwfttj.supabase.co/rest/v1/',
+  SUPABASE_KEY: 'sb_publishable_PQhMtUDu_UL0C8c3BtBXdQ_Cr01Oqsj',
+};
+
+// ═══════════════════════════════════════════════
+// FONCTION D'INSCRIPTION PRINCIPALE
+// Compatible avec Supabase, Firebase, ou API custom
+// ═══════════════════════════════════════════════
+async function inscrireClient(data) {
+  /*
+  ┌─────────────────────────────────────────────────────────┐
+  │  OPTION A — SUPABASE (copier-coller prêt à l'emploi)   │
+  │                                                         │
+  │  1. npm install @supabase/supabase-js                  │
+  │  2. Décommentez le code ci-dessous                     │
+  │  3. Remplacez SUPABASE_URL et SUPABASE_KEY             │
+  └─────────────────────────────────────────────────────────┘
+  */
+
+  const { createClient } = supabase;
+  const client = createClient(DB_CONFIG.SUPABASE_URL, DB_CONFIG.SUPABASE_KEY);
+
+  // Hachage du mot de passe avec bcryptjs
+  const salt = await bcrypt.genSalt(10);
+  data.password = await bcrypt.hash(data.password, salt);
+
+  // Création du compte auth Supabase
+  const { data: authData, error: authError } = await client.auth.signUp({
+    email: data.email,
+    password: data.password,
+  });
+  if (authError) throw new Error(authError.message);
+
+  // Insertion du profil dans la table 'clients'
+  const { error: dbError } = await client.from('clients').insert([{
+    id: authData.user.id,
+    prenom: data.prenom,
+    nom: data.nom,
+    email: data.email,
+    whatsapp: data.whatsapp,
+    activite: data.activite,
+    description: data.description,
+    plan: data.plan,
+    statut: 'en_attente',
+    date_inscription: new Date().toISOString(),
+  }]);
+  if (dbError) throw new Error(dbError.message);
+  return { success: true, userId: authData.user.id };
+
+  /*
+  ╔═══════════════════════════════════════════════════════════╗
+  ║  STRUCTURE SQL TABLE SUPABASE — à créer dans SQL Editor  ║
+  ╠═══════════════════════════════════════════════════════════╣
+  ║  CREATE TABLE clients (                                   ║
+  ║    id UUID PRIMARY KEY,                                   ║
+  ║    prenom TEXT NOT NULL,                                  ║
+  ║    nom TEXT NOT NULL,                                     ║
+  ║    email TEXT UNIQUE NOT NULL,                            ║
+  ║    whatsapp TEXT,                                         ║
+  ║    activite TEXT,                                         ║
+  ║    description TEXT,                                      ║
+  ║    plan TEXT DEFAULT 'creation_abonnement',               ║
+  ║    statut TEXT DEFAULT 'en_attente',                      ║
+  ║    date_inscription TIMESTAMPTZ DEFAULT now()             ║
+  ║  );                                                       ║
+  ║                                                           ║
+  ║  -- Activer Row Level Security                            ║
+  ║  ALTER TABLE clients ENABLE ROW LEVEL SECURITY;          ║
+  ╚═══════════════════════════════════════════════════════════╝
+  */
+
+  /*
+  ┌─────────────────────────────────────────────────────────┐
+  │  OPTION B — API BACKEND CUSTOM (Node.js + Express)     │
+  │  Décommentez si vous avez votre propre backend          │
+  └─────────────────────────────────────────────────────────┘
+
+  const response = await fetch(`${DB_CONFIG.API_URL}/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.message || 'Erreur serveur');
+  return result;
+
+  ENDPOINT EXPRESS CÔTÉ SERVEUR (à copier dans votre backend) :
+  ─────────────────────────────────────────────────────────────
+  const bcrypt = require('bcrypt');
+  const { Pool } = require('pg'); // ou mysql2 pour MySQL
+
+  app.post('/api/register', async (req, res) => {
+    const { prenom, nom, email, password, whatsapp, activite, description, plan } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+      await pool.query(
+        'INSERT INTO clients (prenom, nom, email, password, whatsapp, activite, description, plan) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)',
+        [prenom, nom, email, hashedPassword, whatsapp, activite, description, plan]
+      );
+      res.json({ success: true, message: 'Compte créé' });
+    } catch (err) {
+      if (err.code === '23505') res.status(409).json({ message: 'Email déjà utilisé' });
+      else res.status(500).json({ message: 'Erreur serveur' });
+    }
+  });
+  */
+
+  // ══════════════════════════════════════════════
+  // MODE DÉMO (actif par défaut tant que la BDD n'est pas connectée)
+  // Simule une inscription réussie après 1.5 secondes
+  // ══════════════════════════════════════════════
+  await new Promise(r => setTimeout(r, 1500));
+  console.log('📦 Données client à sauvegarder en BDD :', {
+    prenom: data.prenom,
+    nom: data.nom,
+    email: data.email,
+    whatsapp: data.whatsapp,
+    activite: data.activite,
+    description: data.description,
+    plan: data.plan,
+    password: '[HASHÉ côté serveur]',
+    date_inscription: new Date().toISOString(),
+    statut: 'en_attente'
+  });
+  return { success: true, demo: true };
+}
+
+// ═══════════════════════════════════════════════
+// GESTION DU FORMULAIRE
+// ═══════════════════════════════════════════════
+const form = document.getElementById('inscriptionForm');
+const submitBtn = document.getElementById('submitBtn');
+const formMessage = document.getElementById('formMessage');
+
+// Sélection des plans
+document.querySelectorAll('.plan-option').forEach(option => {
+  option.addEventListener('click', () => {
+    document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
+    option.classList.add('selected');
+  });
+});
+
+// Soumission du formulaire
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  formMessage.className = 'form-message';
+  formMessage.style.display = 'none';
+
+  // Validation CGV
+  if (!document.getElementById('cgv').checked) {
+    formMessage.textContent = '⚠️ Veuillez accepter les conditions générales de vente.';
+    formMessage.className = 'form-message error';
+    return;
+  }
+
+  // Validation mot de passe
+  const password = document.getElementById('password').value;
+  if (password.length < 8) {
+    formMessage.textContent = '⚠️ Le mot de passe doit contenir au moins 8 caractères.';
+    formMessage.className = 'form-message error';
+    return;
+  }
+
+  // Récupération du plan sélectionné
+  const planSelectionne = document.querySelector('input[name="plan"]:checked').value;
+
+  // Données à envoyer
+  const clientData = {
+    prenom: document.getElementById('prenom').value.trim(),
+    nom: document.getElementById('nom').value.trim(),
+    email: document.getElementById('email').value.trim().toLowerCase(),
+    password: document.getElementById('password').value,
+    whatsapp: document.getElementById('whatsapp').value.trim(),
+    activite: document.getElementById('activite').value,
+    description: document.getElementById('description').value.trim(),
+    plan: planSelectionne,
+  };
+
+  // État loading
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span>Création du compte...';
+
+  try {
+    const result = await inscrireClient(clientData);
+    if (result.success) {
+      const isDemoMsg = result.demo
+        ? ' (Mode démo — connectez votre base de données pour activer)'
+        : '';
+      formMessage.textContent = `✅ Compte créé avec succès ! Notre équipe vous contacte sur WhatsApp sous 24h.${isDemoMsg}`;
+      formMessage.className = 'form-message success';
+      form.reset();
+      document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
+      document.querySelector('.plan-option').classList.add('selected');
+    }
+  } catch (err) {
+    formMessage.textContent = `❌ ${err.message || 'Une erreur est survenue. Réessayez ou contactez-nous sur WhatsApp.'}`;
+    formMessage.className = 'form-message error';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = 'Créer mon compte';
+    formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+});
+
+// ═══════════════════════════════════════════════
+// ANIMATIONS AU SCROLL
+// ═══════════════════════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
