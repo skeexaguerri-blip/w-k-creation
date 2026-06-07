@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>W&K Creation — Votre Boutique En Ligne</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
 <style>
   :root {
     --or: #C9A84C;
@@ -19,19 +21,9 @@
     --rouge: #E05252;
     --vert: #4CAF7D;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--noir);
-    color: var(--blanc);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
-  }
-
-  /* NOISE TEXTURE */
+  body { background: var(--noir); color: var(--blanc); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
   body::before {
     content: '';
     position: fixed;
@@ -41,656 +33,185 @@
     z-index: 9999;
     opacity: 0.4;
   }
-
-  /* NAV */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 20px 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     background: rgba(13,13,13,0.85);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(201,168,76,0.15);
   }
-
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--or);
-    letter-spacing: 2px;
-    text-decoration: none;
-  }
-
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: var(--or); letter-spacing: 2px; text-decoration: none; }
   .logo span { color: var(--blanc); }
-
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 40px;
-  }
-
-  nav ul a {
-    color: var(--gris);
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: color 0.3s;
-  }
-
+  nav ul { list-style: none; display: flex; gap: 40px; }
+  nav ul a { color: var(--gris); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s; }
   nav ul a:hover { color: var(--or); }
-
-  .nav-cta {
-    background: var(--or);
-    color: var(--noir) !important;
-    padding: 10px 24px;
-    border-radius: 2px;
-    font-weight: 600 !important;
-    transition: background 0.3s !important;
-  }
-
+  .nav-cta { background: var(--or); color: var(--noir) !important; padding: 10px 24px; border-radius: 2px; font-weight: 600 !important; transition: background 0.3s !important; }
   .nav-cta:hover { background: var(--or-light) !important; color: var(--noir) !important; }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 120px 40px 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%);
-  }
-
-  .hero-lines {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
+  .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 40px 80px; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%); }
+  .hero-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px); background-size: 60px 60px; }
   .hero-content { position: relative; z-index: 2; max-width: 800px; }
-
-  .hero-badge {
-    display: inline-block;
-    border: 1px solid rgba(201,168,76,0.4);
-    color: var(--or);
-    font-size: 0.75rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 8px 20px;
-    margin-bottom: 40px;
-    animation: fadeUp 0.8s ease both;
-  }
-
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 7vw, 5.5rem);
-    font-weight: 900;
-    line-height: 1.05;
-    margin-bottom: 30px;
-    animation: fadeUp 0.8s 0.1s ease both;
-  }
-
+  .hero-badge { display: inline-block; border: 1px solid rgba(201,168,76,0.4); color: var(--or); font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; padding: 8px 20px; margin-bottom: 40px; animation: fadeUp 0.8s ease both; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 900; line-height: 1.05; margin-bottom: 30px; animation: fadeUp 0.8s 0.1s ease both; }
   .hero h1 .gold { color: var(--or); }
-
-  .hero p {
-    font-size: 1.15rem;
-    color: var(--gris);
-    line-height: 1.7;
-    max-width: 560px;
-    margin: 0 auto 50px;
-    font-weight: 300;
-    animation: fadeUp 0.8s 0.2s ease both;
-  }
-
-  .hero-btns {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-    animation: fadeUp 0.8s 0.3s ease both;
-  }
-
-  .btn-primary {
-    background: var(--or);
-    color: var(--noir);
-    padding: 16px 40px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border: none;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-primary:hover {
-    background: var(--or-light);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 40px rgba(201,168,76,0.3);
-  }
-
-  .btn-secondary {
-    background: transparent;
-    color: var(--blanc);
-    padding: 16px 40px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 0.95rem;
-    border: 1px solid rgba(255,255,255,0.2);
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--or);
-    color: var(--or);
-  }
-
-  /* STATS */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: rgba(201,168,76,0.1);
-    border-top: 1px solid rgba(201,168,76,0.1);
-    border-bottom: 1px solid rgba(201,168,76,0.1);
-  }
-
-  .stat {
-    background: var(--noir);
-    padding: 50px 40px;
-    text-align: center;
-  }
-
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--or);
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  .stat-label {
-    color: var(--gris);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-
-  /* SECTIONS COMMUNES */
+  .hero p { font-size: 1.15rem; color: var(--gris); line-height: 1.7; max-width: 560px; margin: 0 auto 50px; font-weight: 300; animation: fadeUp 0.8s 0.2s ease both; }
+  .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; animation: fadeUp 0.8s 0.3s ease both; }
+  .btn-primary { background: var(--or); color: var(--noir); padding: 16px 40px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem; border: none; cursor: pointer; letter-spacing: 0.5px; transition: all 0.3s; text-decoration: none; display: inline-block; }
+  .btn-primary:hover { background: var(--or-light); transform: translateY(-2px); box-shadow: 0 10px 40px rgba(201,168,76,0.3); }
+  .btn-secondary { background: transparent; color: var(--blanc); padding: 16px 40px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; letter-spacing: 0.5px; transition: all 0.3s; text-decoration: none; display: inline-block; }
+  .btn-secondary:hover { border-color: var(--or); color: var(--or); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(201,168,76,0.1); border-top: 1px solid rgba(201,168,76,0.1); border-bottom: 1px solid rgba(201,168,76,0.1); }
+  .stat { background: var(--noir); padding: 50px 40px; text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--or); display: block; margin-bottom: 8px; }
+  .stat-label { color: var(--gris); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; }
   section { padding: 100px 60px; }
-
-  .section-tag {
-    display: inline-block;
-    color: var(--or);
-    font-size: 0.7rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 700;
-    line-height: 1.15;
-    margin-bottom: 20px;
-  }
-
-  .section-sub {
-    color: var(--gris);
-    font-size: 1rem;
-    line-height: 1.7;
-    font-weight: 300;
-    max-width: 560px;
-  }
-
-  /* COMMENT ÇA MARCHE */
-  #comment {
-    background: var(--noir2);
-  }
-
-  .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 2px;
-    margin-top: 60px;
-    background: rgba(201,168,76,0.08);
-  }
-
-  .step {
-    background: var(--noir2);
-    padding: 50px 35px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-
+  .section-tag { display: inline-block; color: var(--or); font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.15; margin-bottom: 20px; }
+  .section-sub { color: var(--gris); font-size: 1rem; line-height: 1.7; font-weight: 300; max-width: 560px; }
+  #comment { background: var(--noir2); }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; margin-top: 60px; background: rgba(201,168,76,0.08); }
+  .step { background: var(--noir2); padding: 50px 35px; position: relative; overflow: hidden; transition: background 0.3s; }
   .step:hover { background: var(--noir3); }
-
-  .step::before {
-    content: attr(data-num);
-    position: absolute;
-    top: -10px; right: 20px;
-    font-family: 'Playfair Display', serif;
-    font-size: 7rem;
-    font-weight: 900;
-    color: rgba(201,168,76,0.05);
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .step-icon {
-    font-size: 2rem;
-    margin-bottom: 24px;
-    display: block;
-  }
-
-  .step h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    margin-bottom: 12px;
-    color: var(--blanc);
-  }
-
-  .step p {
-    color: var(--gris);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  /* PRICING */
+  .step::before { content: attr(data-num); position: absolute; top: -10px; right: 20px; font-family: 'Playfair Display', serif; font-size: 7rem; font-weight: 900; color: rgba(201,168,76,0.05); line-height: 1; pointer-events: none; }
+  .step-icon { font-size: 2rem; margin-bottom: 24px; display: block; }
+  .step h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 12px; color: var(--blanc); }
+  .step p { color: var(--gris); font-size: 0.9rem; line-height: 1.6; font-weight: 300; }
   #tarifs { background: var(--noir); }
-
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2px;
-    margin-top: 60px;
-    background: rgba(201,168,76,0.1);
-    max-width: 900px;
-  }
-
-  .pricing-card {
-    background: var(--noir2);
-    padding: 50px 40px;
-    position: relative;
-  }
-
-  .pricing-card.featured {
-    background: var(--noir3);
-    border-top: 3px solid var(--or);
-  }
-
-  .pricing-badge {
-    display: inline-block;
-    background: var(--or);
-    color: var(--noir);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 4px 14px;
-    margin-bottom: 20px;
-  }
-
-  .pricing-name {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--gris);
-    margin-bottom: 20px;
-  }
-
-  .pricing-price {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: var(--or);
-    margin-bottom: 4px;
-  }
-
-  .pricing-price span {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    color: var(--gris);
-    font-weight: 300;
-  }
-
-  .pricing-desc {
-    color: var(--gris);
-    font-size: 0.85rem;
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    font-weight: 300;
-  }
-
-  .pricing-features {
-    list-style: none;
-    margin-bottom: 40px;
-  }
-
-  .pricing-features li {
-    padding: 10px 0;
-    font-size: 0.9rem;
-    color: var(--gris);
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    font-weight: 300;
-  }
-
-  .pricing-features li::before {
-    content: '—';
-    color: var(--or);
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  /* INSCRIPTION */
-  #inscription {
-    background: var(--noir2);
-  }
-
-  .form-wrapper {
-    max-width: 640px;
-    margin: 60px auto 0;
-  }
-
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px; margin-top: 60px; background: rgba(201,168,76,0.1); max-width: 900px; }
+  .pricing-card { background: var(--noir2); padding: 50px 40px; position: relative; }
+  .pricing-card.featured { background: var(--noir3); border-top: 3px solid var(--or); }
+  .pricing-badge { display: inline-block; background: var(--or); color: var(--noir); font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 4px 14px; margin-bottom: 20px; }
+  .pricing-name { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gris); margin-bottom: 20px; }
+  .pricing-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: var(--or); margin-bottom: 4px; }
+  .pricing-price span { font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--gris); font-weight: 300; }
+  .pricing-desc { color: var(--gris); font-size: 0.85rem; margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: 300; }
+  .pricing-features { list-style: none; margin-bottom: 40px; }
+  .pricing-features li { padding: 10px 0; font-size: 0.9rem; color: var(--gris); display: flex; align-items: flex-start; gap: 12px; font-weight: 300; }
+  .pricing-features li::before { content: '—'; color: var(--or); font-weight: 700; flex-shrink: 0; }
+  #inscription { background: var(--noir2); }
+  .form-wrapper { max-width: 640px; margin: 60px auto 0; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
   .form-group.full { grid-column: 1 / -1; }
-
-  .form-group label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--gris);
-    font-weight: 500;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--blanc);
-    padding: 14px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.3s, background 0.3s;
-    width: 100%;
-  }
-
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--or);
-    background: rgba(201,168,76,0.05);
-  }
-
-  .form-group input::placeholder,
-  .form-group textarea::placeholder {
-    color: var(--gris2);
-  }
-
-  .form-group select option {
-    background: var(--noir3);
-    color: var(--blanc);
-  }
-
-  .form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-
-  .plan-select {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .plan-option {
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-  }
-
+  .form-group label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gris); font-weight: 500; }
+  .form-group input, .form-group select, .form-group textarea { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--blanc); padding: 14px 18px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.3s, background 0.3s; width: 100%; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--or); background: rgba(201,168,76,0.05); }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: var(--gris2); }
+  .form-group select option { background: var(--noir3); color: var(--blanc); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .plan-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .plan-option { border: 1px solid rgba(255,255,255,0.08); padding: 20px; cursor: pointer; transition: all 0.3s; position: relative; }
   .plan-option:hover { border-color: rgba(201,168,76,0.4); }
-
-  .plan-option.selected {
-    border-color: var(--or);
-    background: rgba(201,168,76,0.06);
-  }
-
-  .plan-option input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .plan-option-name {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--gris);
-    margin-bottom: 6px;
-  }
-
-  .plan-option-price {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    color: var(--or);
-    font-weight: 700;
-  }
-
-  .plan-option-price small {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    color: var(--gris);
-    font-weight: 300;
-  }
-
-  .checkbox-group {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin: 20px 0;
-  }
-
-  .checkbox-group input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--or);
-    flex-shrink: 0;
-    margin-top: 2px;
-    cursor: pointer;
-  }
-
-  .checkbox-group label {
-    font-size: 0.85rem;
-    color: var(--gris);
-    cursor: pointer;
-    line-height: 1.5;
-    font-weight: 300;
-  }
-
+  .plan-option.selected { border-color: var(--or); background: rgba(201,168,76,0.06); }
+  .plan-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .plan-option-name { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gris); margin-bottom: 6px; }
+  .plan-option-price { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--or); font-weight: 700; }
+  .plan-option-price small { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; color: var(--gris); font-weight: 300; }
+  .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin: 20px 0; }
+  .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--or); flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+  .checkbox-group label { font-size: 0.85rem; color: var(--gris); cursor: pointer; line-height: 1.5; font-weight: 300; }
   .checkbox-group label a { color: var(--or); text-decoration: none; }
+  .checkbox-group label a:hover { text-decoration: underline; }
+  .form-submit { width: 100%; padding: 18px; background: var(--or); color: var(--noir); font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; }
+  .form-submit:hover { background: var(--or-light); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(201,168,76,0.4); }
+  .form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .form-message { margin-top: 16px; padding: 16px 20px; font-size: 0.95rem; display: none; font-weight: 400; line-height: 1.6; border-radius: 2px; }
+  .form-message.success { background: rgba(76,175,125,0.1); border: 1px solid rgba(76,175,125,0.3); color: var(--vert); display: block; }
+  .form-message.error { background: rgba(224,82,82,0.1); border: 1px solid rgba(224,82,82,0.3); color: var(--rouge); display: block; }
+  .form-message.warning { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); color: var(--or); display: block; }
 
-  .form-submit {
-    width: 100%;
-    padding: 18px;
-    background: var(--or);
-    color: var(--noir);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
+  /* MODAL CONTRAT */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(0,0,0,0.92);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
   }
-
-  .form-submit:hover {
-    background: var(--or-light);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 30px rgba(201,168,76,0.4);
-  }
-
-  .form-submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .form-message {
-    margin-top: 16px;
-    padding: 14px 20px;
-    font-size: 0.9rem;
-    display: none;
-    font-weight: 400;
-  }
-
-  .form-message.success {
-    background: rgba(76,175,125,0.1);
-    border: 1px solid rgba(76,175,125,0.3);
-    color: var(--vert);
-    display: block;
-  }
-
-  .form-message.error {
-    background: rgba(224,82,82,0.1);
-    border: 1px solid rgba(224,82,82,0.3);
-    color: var(--rouge);
-    display: block;
-  }
-
-  /* FOOTER */
-  footer {
-    background: var(--noir);
-    border-top: 1px solid rgba(201,168,76,0.1);
-    padding: 60px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 60px;
-  }
-
-  .footer-brand .logo { font-size: 1.3rem; display: block; margin-bottom: 16px; }
-
-  .footer-brand p {
-    color: var(--gris);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  .footer-col h4 {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--or);
-    margin-bottom: 20px;
-  }
-
-  .footer-col ul { list-style: none; }
-
-  .footer-col ul li {
-    margin-bottom: 10px;
-    color: var(--gris);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: color 0.3s;
-  }
-
-  .footer-col ul li:hover { color: var(--blanc); }
-
-  .footer-bottom {
-    grid-column: 1 / -1;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding-top: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--gris2);
-    font-size: 0.8rem;
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--noir2);
+    border: 1px solid rgba(201,168,76,0.2);
+    max-width: 780px; width: 100%;
+    max-height: 85vh;
+    display: flex; flex-direction: column;
     transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transition: transform 0.3s;
   }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
+  .modal-overlay.active .modal { transform: translateY(0); }
+  .modal-header {
+    padding: 30px 40px 20px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
   }
+  .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--or); }
+  .modal-close { background: none; border: none; color: var(--gris); font-size: 1.5rem; cursor: pointer; transition: color 0.3s; line-height: 1; }
+  .modal-close:hover { color: var(--blanc); }
+  .modal-body { padding: 30px 40px; overflow-y: auto; flex: 1; }
+  .modal-body::-webkit-scrollbar { width: 3px; }
+  .modal-body::-webkit-scrollbar-thumb { background: var(--or-dark); }
+  .modal-body h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--or); margin: 28px 0 10px; }
+  .modal-body h3:first-child { margin-top: 0; }
+  .modal-body p { color: var(--gris); font-size: 0.88rem; line-height: 1.75; margin-bottom: 10px; font-weight: 300; }
+  .modal-body ul { padding-left: 20px; margin-bottom: 12px; }
+  .modal-body ul li { color: var(--gris); font-size: 0.88rem; line-height: 1.75; font-weight: 300; margin-bottom: 4px; }
+  .modal-body table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .modal-body table th { background: rgba(201,168,76,0.15); color: var(--or); padding: 10px 14px; font-size: 0.8rem; text-align: left; letter-spacing: 1px; }
+  .modal-body table td { padding: 10px 14px; color: var(--gris); font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .modal-footer { padding: 20px 40px 30px; border-top: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; display: flex; justify-content: flex-end; }
+  .modal-footer button { background: var(--or); color: var(--noir); border: none; padding: 12px 32px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; transition: background 0.3s; }
+  .modal-footer button:hover { background: var(--or-light); }
 
-  /* LOADING SPINNER */
-  .spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(13,13,13,0.3);
-    border-top-color: var(--noir);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 8px;
+  /* SUCCESS MODAL */
+  .success-modal-overlay {
+    position: fixed; inset: 0; z-index: 10001;
+    background: rgba(0,0,0,0.95);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s;
   }
+  .success-modal-overlay.active { opacity: 1; pointer-events: all; }
+  .success-modal {
+    background: var(--noir2);
+    border: 1px solid rgba(76,175,125,0.3);
+    border-top: 3px solid var(--vert);
+    max-width: 520px; width: 100%;
+    padding: 60px 50px;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.4s;
+  }
+  .success-modal-overlay.active .success-modal { transform: scale(1); }
+  .success-icon { font-size: 4rem; margin-bottom: 24px; display: block; animation: bounce 0.6s ease; }
+  .success-modal h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--blanc); margin-bottom: 16px; }
+  .success-modal p { color: var(--gris); font-size: 0.95rem; line-height: 1.7; font-weight: 300; margin-bottom: 10px; }
+  .success-modal .highlight { color: var(--or); font-weight: 600; }
+  .success-modal .whatsapp-info { background: rgba(76,175,125,0.08); border: 1px solid rgba(76,175,125,0.2); padding: 20px; margin: 24px 0; }
+  .success-modal .whatsapp-info p { color: var(--vert); margin: 0; font-size: 0.9rem; }
+  .success-close { background: var(--or); color: var(--noir); border: none; padding: 14px 40px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; transition: background 0.3s; margin-top: 10px; }
+  .success-close:hover { background: var(--or-light); }
 
+  footer { background: var(--noir); border-top: 1px solid rgba(201,168,76,0.1); padding: 60px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 60px; }
+  .footer-brand .logo { font-size: 1.3rem; display: block; margin-bottom: 16px; }
+  .footer-brand p { color: var(--gris); font-size: 0.85rem; line-height: 1.6; font-weight: 300; }
+  .footer-col h4 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: var(--or); margin-bottom: 20px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; color: var(--gris); font-size: 0.85rem; cursor: pointer; transition: color 0.3s; }
+  .footer-col ul li:hover { color: var(--blanc); }
+  .footer-bottom { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: var(--gris2); font-size: 0.8rem; }
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent); margin: 0 60px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .spinner { width: 18px; height: 18px; border: 2px solid rgba(13,13,13,0.3); border-top-color: var(--noir); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* RESPONSIVE */
   @media (max-width: 768px) {
     nav { padding: 16px 24px; }
     nav ul { display: none; }
@@ -700,25 +221,114 @@
     .plan-select { grid-template-columns: 1fr; }
     footer { grid-template-columns: 1fr; padding: 40px 24px; gap: 40px; }
     .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
-    .hero h1 { font-size: 2.5rem; }
+    .modal-body { padding: 20px 24px; }
+    .modal-header { padding: 20px 24px; }
+    .modal-footer { padding: 16px 24px 24px; }
+    .success-modal { padding: 40px 28px; }
   }
-
-  /* SCROLL BAR */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--noir); }
   ::-webkit-scrollbar-thumb { background: var(--or-dark); }
-
-  /* DIVIDER */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
-    margin: 0 60px;
-  }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
 </head>
 <body>
+
+<!-- MODAL CONTRAT CGV -->
+<div class="modal-overlay" id="cgvModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Conditions Générales de Vente</h2>
+      <button class="modal-close" onclick="fermerModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Dernière mise à jour : Juin 2025 — W&K Creation, Abidjan, Côte d'Ivoire</p>
+
+      <h3>Article 1 — Parties du contrat</h3>
+      <p><strong style="color:var(--blanc)">Le Prestataire :</strong> W&K Creation, agence de création de sites e-commerce basée à Abidjan, Côte d'Ivoire.</p>
+      <p><strong style="color:var(--blanc)">Le Client :</strong> Toute personne physique ou morale qui s'inscrit sur la plateforme W&K Creation et commande une prestation de création de site e-commerce.</p>
+
+      <h3>Article 2 — Objet du contrat</h3>
+      <p>W&K Creation s'engage à créer un site e-commerce professionnel et personnalisé pour le Client, permettant la vente de produits physiques en ligne avec intégration des paiements mobiles (Wave, Orange Money, MTN MoMo).</p>
+
+      <h3>Article 3 — Tarifs et paiement</h3>
+      <table>
+        <tr><th>Prestation</th><th>Montant</th></tr>
+        <tr><td>Création du site e-commerce</td><td>150 000 FCFA (paiement unique)</td></tr>
+        <tr><td>Abonnement mensuel</td><td>15 000 FCFA/mois</td></tr>
+      </table>
+      <ul>
+        <li>Les frais de création sont dus intégralement avant le début des travaux</li>
+        <li>L'abonnement mensuel est prélevé le 1er de chaque mois</li>
+        <li>Paiement accepté via : Wave / Orange Money / MTN MoMo</li>
+        <li>Tout retard de paiement supérieur à 7 jours entraîne la suspension du site</li>
+      </ul>
+
+      <h3>Article 4 — Délais de livraison</h3>
+      <table>
+        <tr><th>Type</th><th>Délai</th></tr>
+        <tr><td>Site e-commerce standard</td><td>7 à 14 jours ouvrables</td></tr>
+        <tr><td>Révisions après livraison</td><td>3 jours ouvrables</td></tr>
+        <tr><td>Mise en ligne définitive</td><td>1 jour ouvrable après validation</td></tr>
+      </table>
+      <p>Tout retard dans la transmission des éléments par le Client prolonge automatiquement le délai de livraison.</p>
+
+      <h3>Article 5 — Contenu de l'abonnement mensuel</h3>
+      <p><strong style="color:var(--blanc)">Inclus sans limite :</strong> hébergement, sécurité, corrections de bugs, support WhatsApp (réponse sous 24h ouvrables).</p>
+      <table>
+        <tr><th>Service inclus</th><th>Limite mensuelle</th></tr>
+        <tr><td>Ajout de nouveaux produits</td><td>10 produits/mois</td></tr>
+        <tr><td>Modification de prix</td><td>Illimité</td></tr>
+        <tr><td>Modification de photos</td><td>5 photos/mois</td></tr>
+        <tr><td>Modification de textes</td><td>3 fois/mois</td></tr>
+        <tr><td>Modification de design</td><td>1 fois/mois</td></tr>
+      </table>
+      <p><strong style="color:var(--blanc)">Services supplémentaires (hors abonnement) :</strong></p>
+      <ul>
+        <li>Produit supplémentaire au-delà de 10/mois : 500 FCFA/produit</li>
+        <li>Refonte complète du design : 30 000 – 50 000 FCFA</li>
+        <li>Ajout d'une nouvelle page : 15 000 FCFA</li>
+        <li>Intégration d'un nouveau moyen de paiement : 20 000 FCFA</li>
+      </ul>
+
+      <h3>Article 6 — Règles de communication</h3>
+      <ul>
+        <li>Toutes les demandes de modification passent exclusivement par WhatsApp</li>
+        <li>Le délai de traitement standard est de 24h ouvrables</li>
+        <li>Les demandes hors abonnement sont devisées avant exécution</li>
+        <li>Aucune modification n'est effectuée sans accord écrit sur le tarif</li>
+      </ul>
+
+      <h3>Article 7 — Suspension et résiliation</h3>
+      <p>Le site est suspendu automatiquement après 7 jours de retard de paiement. Le Client peut résilier avec un préavis de 30 jours. Les frais de création ne sont pas remboursables après le début des travaux.</p>
+
+      <h3>Article 8 — Propriété intellectuelle</h3>
+      <p>Le Client reste propriétaire de tous ses contenus (photos, textes, logo). Le design du site appartient à W&K Creation jusqu'au paiement intégral des frais de création. W&K Creation se réserve le droit de mentionner la réalisation dans son portfolio.</p>
+
+      <h3>Article 9 — Confidentialité</h3>
+      <p>W&K Creation s'engage à maintenir la stricte confidentialité de toutes les informations commerciales et personnelles du Client. Ces informations ne seront jamais transmises à des tiers.</p>
+
+      <h3>Article 10 — Litiges</h3>
+      <p>En cas de litige, les parties s'engagent à rechercher une solution amiable sous 15 jours. À défaut, le litige sera soumis aux juridictions compétentes d'Abidjan, Côte d'Ivoire.</p>
+    </div>
+    <div class="modal-footer">
+      <button onclick="accepterCGV()">J'accepte les conditions</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SUCCÈS INSCRIPTION -->
+<div class="success-modal-overlay" id="successModal">
+  <div class="success-modal">
+    <span class="success-icon">🎉</span>
+    <h2>Félicitations !</h2>
+    <p>Votre compte <span class="highlight">W&K Creation</span> a été créé avec succès.</p>
+    <div class="whatsapp-info">
+      <p>📱 Notre équipe vous contactera sur <strong>WhatsApp sous 24h</strong> pour démarrer la création de votre boutique en ligne.</p>
+    </div>
+    <p style="font-size:0.85rem">En attendant, préparez vos <span class="highlight">photos de produits</span>, votre <span class="highlight">logo</span> et la <span class="highlight">description de votre boutique</span>.</p>
+    <button class="success-close" onclick="fermerSucces()">Parfait, merci !</button>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -745,76 +355,47 @@
   </div>
 </section>
 
-<!-- STATS -->
 <div class="stats">
-  <div class="stat reveal">
-    <span class="stat-num">48h</span>
-    <span class="stat-label">Délai de démarrage</span>
-  </div>
-  <div class="stat reveal">
-    <span class="stat-num">3</span>
-    <span class="stat-label">Moyens de paiement intégrés</span>
-  </div>
-  <div class="stat reveal">
-    <span class="stat-num">100%</span>
-    <span class="stat-label">Mobile-first & rapide</span>
-  </div>
+  <div class="stat reveal"><span class="stat-num">48h</span><span class="stat-label">Délai de démarrage</span></div>
+  <div class="stat reveal"><span class="stat-num">3</span><span class="stat-label">Moyens de paiement intégrés</span></div>
+  <div class="stat reveal"><span class="stat-num">100%</span><span class="stat-label">Mobile-first & rapide</span></div>
 </div>
 
 <div class="divider"></div>
 
-<!-- COMMENT ÇA MARCHE -->
 <section id="comment">
   <div class="reveal">
     <span class="section-tag">Processus</span>
     <h2 class="section-title">Simple. Rapide.<br>Efficace.</h2>
     <p class="section-sub">De l'inscription à la première vente, nous gérons tout pour vous.</p>
   </div>
-  <div class="steps-grid" style="margin-top:60px">
-    <div class="step reveal" data-num="1">
-      <span class="step-icon">📝</span>
-      <h3>Inscription en ligne</h3>
-      <p>Remplissez le formulaire d'inscription et choisissez votre plan. Paiement sécurisé via Wave ou Orange Money.</p>
-    </div>
-    <div class="step reveal" data-num="2">
-      <span class="step-icon">🎨</span>
-      <h3>Création de votre site</h3>
-      <p>Notre équipe crée votre boutique personnalisée sous 7 à 14 jours ouvrables. Design professionnel, adapté à votre univers.</p>
-    </div>
-    <div class="step reveal" data-num="3">
-      <span class="step-icon">✅</span>
-      <h3>Validation & mise en ligne</h3>
-      <p>Vous validez le résultat, nous mettons en ligne. Votre URL personnalisée est active et prête à recevoir des commandes.</p>
-    </div>
-    <div class="step reveal" data-num="4">
-      <span class="step-icon">📦</span>
-      <h3>Gérez & vendez</h3>
-      <p>Commandes, stock, paiements — tout est automatisé. Nous assurons la maintenance et les mises à jour chaque mois.</p>
-    </div>
+  <div class="steps-grid">
+    <div class="step reveal" data-num="1"><span class="step-icon">📝</span><h3>Inscription en ligne</h3><p>Remplissez le formulaire d'inscription et choisissez votre plan.</p></div>
+    <div class="step reveal" data-num="2"><span class="step-icon">🎨</span><h3>Création de votre site</h3><p>Notre équipe crée votre boutique personnalisée sous 7 à 14 jours ouvrables.</p></div>
+    <div class="step reveal" data-num="3"><span class="step-icon">✅</span><h3>Validation & mise en ligne</h3><p>Vous validez le résultat, nous mettons en ligne votre boutique.</p></div>
+    <div class="step reveal" data-num="4"><span class="step-icon">📦</span><h3>Gérez & vendez</h3><p>Commandes, stock, paiements — tout est automatisé.</p></div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- TARIFS -->
 <section id="tarifs">
   <div class="reveal">
     <span class="section-tag">Tarifs</span>
     <h2 class="section-title">Transparent.<br>Sans surprise.</h2>
-    <p class="section-sub">Un paiement unique pour la création, puis un abonnement mensuel pour tout gérer.</p>
+    <p class="section-sub">Un paiement unique pour la création, puis un abonnement mensuel.</p>
   </div>
-
   <div class="pricing-grid reveal">
     <div class="pricing-card">
       <div class="pricing-name">Création du site</div>
       <div class="pricing-price">150 000 <span>FCFA</span></div>
-      <p class="pricing-desc">Paiement unique — à régler avant le début des travaux</p>
+      <p class="pricing-desc">Paiement unique — avant le début des travaux</p>
       <ul class="pricing-features">
         <li>Site e-commerce complet & personnalisé</li>
         <li>Catalogue produits illimité</li>
         <li>Paiement Wave / Orange Money / MTN MoMo</li>
         <li>Design mobile-first</li>
-        <li>URL personnalisée (.ci ou .com)</li>
+        <li>URL personnalisée</li>
         <li>Notifications WhatsApp des commandes</li>
         <li>Tableau de bord vendeur</li>
       </ul>
@@ -840,20 +421,17 @@
 
 <div class="divider"></div>
 
-<!-- FORMULAIRE INSCRIPTION -->
 <section id="inscription">
   <div style="text-align:center" class="reveal">
     <span class="section-tag">Inscription</span>
     <h2 class="section-title">Créez votre compte<br><span style="color:var(--or)">W&K Creation</span></h2>
-    <p class="section-sub" style="margin:0 auto">Remplissez le formulaire ci-dessous. Notre équipe vous contacte sous 24h pour démarrer votre projet.</p>
+    <p class="section-sub" style="margin:0 auto">Remplissez le formulaire ci-dessous. Notre équipe vous contacte sur WhatsApp sous 24h.</p>
   </div>
 
   <div class="form-wrapper reveal">
-
-    <!-- CHOIX DU PLAN -->
     <div style="margin-bottom:24px">
       <label style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--gris);font-weight:500;display:block;margin-bottom:12px">Choisissez votre plan</label>
-      <div class="plan-select" id="planSelect">
+      <div class="plan-select">
         <label class="plan-option selected" id="planCreation">
           <input type="radio" name="plan" value="creation_abonnement" checked>
           <div class="plan-option-name">Création + Abonnement</div>
@@ -867,9 +445,7 @@
       </div>
     </div>
 
-    <!-- FORMULAIRE -->
     <form id="inscriptionForm" novalidate>
-
       <div class="form-grid">
         <div class="form-group">
           <label for="prenom">Prénom *</label>
@@ -912,20 +488,16 @@
       </div>
 
       <div class="checkbox-group">
-        <input type="checkbox" id="cgv" name="cgv" required>
-        <label for="cgv">J'accepte les <a href="#">conditions générales de vente</a> et la <a href="#">politique de confidentialité</a> de W&K Creation.</label>
+        <input type="checkbox" id="cgv" name="cgv">
+        <label for="cgv">J'ai lu et j'accepte les <a href="#" onclick="ouvrirModal(event)">conditions générales de vente et d'utilisation</a> de W&K Creation.</label>
       </div>
 
-      <button type="submit" class="form-submit" id="submitBtn">
-        Créer mon compte
-      </button>
-
+      <button type="submit" class="form-submit" id="submitBtn">Créer mon compte</button>
       <div class="form-message" id="formMessage"></div>
     </form>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-brand">
     <a href="#" class="logo">W<span style="color:var(--or)">&</span>K Creation</a>
@@ -955,145 +527,60 @@
 
 <script>
 // ═══════════════════════════════════════════════
-// CONFIGURATION BASE DE DONNÉES
-// À remplacer par vos vraies clés Supabase
+// SUPABASE — CONNEXION
 // ═══════════════════════════════════════════════
-const DB_CONFIG = {
-  SUPABASE_URL: 'https://upaewkcazpvidzlwfttj.supabase.co',
-  SUPABASE_KEY: 'sb_publishable_PQhMtUDu_UL0C8c3BtBXdQ_Cr01Oqsj',
-};
+const { createClient } = supabase;
+const supabaseClient = createClient(
+  'https://upaewkcazpvidzlwfttj.supabase.co',
+  'sb_publishable_PQhMtUDu_UL0C8c3BtBXdQ_Cr01Oqsj'
+);
 
 // ═══════════════════════════════════════════════
-// FONCTION D'INSCRIPTION PRINCIPALE
-// Compatible avec Supabase, Firebase, ou API custom
+// GESTION MODAL CGV
 // ═══════════════════════════════════════════════
-async function inscrireClient(data) {
-  /*
-  ┌─────────────────────────────────────────────────────────┐
-  │  OPTION A — SUPABASE (copier-coller prêt à l'emploi)   │
-  │                                                         │
-  │  1. npm install @supabase/supabase-js                  │
-  │  2. Décommentez le code ci-dessous                     │
-  │  3. Remplacez SUPABASE_URL et SUPABASE_KEY             │
-  └─────────────────────────────────────────────────────────┘
-  */
+function ouvrirModal(e) {
+  e.preventDefault();
+  document.getElementById('cgvModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
 
-  const { createClient } = supabase;
-  const client = createClient(DB_CONFIG.SUPABASE_URL, DB_CONFIG.SUPABASE_KEY);
+function fermerModal() {
+  document.getElementById('cgvModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
 
-  // Hachage du mot de passe avec bcryptjs
-  const salt = await bcrypt.genSalt(10);
-  data.password = await bcrypt.hash(data.password, salt);
+function accepterCGV() {
+  document.getElementById('cgv').checked = true;
+  fermerModal();
+  // Effacer le message d'avertissement si présent
+  const msg = document.getElementById('formMessage');
+  if (msg.classList.contains('warning')) {
+    msg.style.display = 'none';
+    msg.className = 'form-message';
+  }
+}
 
-  // Création du compte auth Supabase
-  const { data: authData, error: authError } = await client.auth.signUp({
-    email: data.email,
-    password: data.password,
-  });
-  if (authError) throw new Error(authError.message);
+// Fermer modal en cliquant dehors
+document.getElementById('cgvModal').addEventListener('click', function(e) {
+  if (e.target === this) fermerModal();
+});
 
-  // Insertion du profil dans la table 'clients'
-  const { error: dbError } = await client.from('clients').insert([{
-    id: authData.user.id,
-    prenom: data.prenom,
-    nom: data.nom,
-    email: data.email,
-    whatsapp: data.whatsapp,
-    activite: data.activite,
-    description: data.description,
-    plan: data.plan,
-    statut: 'en_attente',
-    date_inscription: new Date().toISOString(),
-  }]);
-  if (dbError) throw new Error(dbError.message);
-  return { success: true, userId: authData.user.id };
+// ═══════════════════════════════════════════════
+// GESTION MODAL SUCCÈS
+// ═══════════════════════════════════════════════
+function afficherSucces() {
+  document.getElementById('successModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
 
-  /*
-  ╔═══════════════════════════════════════════════════════════╗
-  ║  STRUCTURE SQL TABLE SUPABASE — à créer dans SQL Editor  ║
-  ╠═══════════════════════════════════════════════════════════╣
-  ║  CREATE TABLE clients (                                   ║
-  ║    id UUID PRIMARY KEY,                                   ║
-  ║    prenom TEXT NOT NULL,                                  ║
-  ║    nom TEXT NOT NULL,                                     ║
-  ║    email TEXT UNIQUE NOT NULL,                            ║
-  ║    whatsapp TEXT,                                         ║
-  ║    activite TEXT,                                         ║
-  ║    description TEXT,                                      ║
-  ║    plan TEXT DEFAULT 'creation_abonnement',               ║
-  ║    statut TEXT DEFAULT 'en_attente',                      ║
-  ║    date_inscription TIMESTAMPTZ DEFAULT now()             ║
-  ║  );                                                       ║
-  ║                                                           ║
-  ║  -- Activer Row Level Security                            ║
-  ║  ALTER TABLE clients ENABLE ROW LEVEL SECURITY;          ║
-  ╚═══════════════════════════════════════════════════════════╝
-  */
-
-  /*
-  ┌─────────────────────────────────────────────────────────┐
-  │  OPTION B — API BACKEND CUSTOM (Node.js + Express)     │
-  │  Décommentez si vous avez votre propre backend          │
-  └─────────────────────────────────────────────────────────┘
-
-  const response = await fetch(`${DB_CONFIG.API_URL}/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  const result = await response.json();
-  if (!response.ok) throw new Error(result.message || 'Erreur serveur');
-  return result;
-
-  ENDPOINT EXPRESS CÔTÉ SERVEUR (à copier dans votre backend) :
-  ─────────────────────────────────────────────────────────────
-  const bcrypt = require('bcrypt');
-  const { Pool } = require('pg'); // ou mysql2 pour MySQL
-
-  app.post('/api/register', async (req, res) => {
-    const { prenom, nom, email, password, whatsapp, activite, description, plan } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    try {
-      await pool.query(
-        'INSERT INTO clients (prenom, nom, email, password, whatsapp, activite, description, plan) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)',
-        [prenom, nom, email, hashedPassword, whatsapp, activite, description, plan]
-      );
-      res.json({ success: true, message: 'Compte créé' });
-    } catch (err) {
-      if (err.code === '23505') res.status(409).json({ message: 'Email déjà utilisé' });
-      else res.status(500).json({ message: 'Erreur serveur' });
-    }
-  });
-  */
-
-  // ══════════════════════════════════════════════
-  // MODE DÉMO (actif par défaut tant que la BDD n'est pas connectée)
-  // Simule une inscription réussie après 1.5 secondes
-  // ══════════════════════════════════════════════
-  await new Promise(r => setTimeout(r, 1500));
-  console.log('📦 Données client à sauvegarder en BDD :', {
-    prenom: data.prenom,
-    nom: data.nom,
-    email: data.email,
-    whatsapp: data.whatsapp,
-    activite: data.activite,
-    description: data.description,
-    plan: data.plan,
-    password: '[HASHÉ côté serveur]',
-    date_inscription: new Date().toISOString(),
-    statut: 'en_attente'
-  });
-  return { success: true, demo: true };
+function fermerSucces() {
+  document.getElementById('successModal').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 // ═══════════════════════════════════════════════
-// GESTION DU FORMULAIRE
+// SÉLECTION DES PLANS
 // ═══════════════════════════════════════════════
-const form = document.getElementById('inscriptionForm');
-const submitBtn = document.getElementById('submitBtn');
-const formMessage = document.getElementById('formMessage');
-
-// Sélection des plans
 document.querySelectorAll('.plan-option').forEach(option => {
   option.addEventListener('click', () => {
     document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
@@ -1101,20 +588,27 @@ document.querySelectorAll('.plan-option').forEach(option => {
   });
 });
 
-// Soumission du formulaire
+// ═══════════════════════════════════════════════
+// SOUMISSION DU FORMULAIRE
+// ═══════════════════════════════════════════════
+const form = document.getElementById('inscriptionForm');
+const submitBtn = document.getElementById('submitBtn');
+const formMessage = document.getElementById('formMessage');
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   formMessage.className = 'form-message';
   formMessage.style.display = 'none';
 
-  // Validation CGV
+  // Vérification CGV
   if (!document.getElementById('cgv').checked) {
-    formMessage.textContent = '⚠️ Veuillez accepter les conditions générales de vente.';
-    formMessage.className = 'form-message error';
+    formMessage.textContent = '⚠️ Vous devez d\'abord accepter les conditions générales de vente et d\'utilisation pour continuer.';
+    formMessage.className = 'form-message warning';
+    formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     return;
   }
 
-  // Validation mot de passe
+  // Vérification mot de passe
   const password = document.getElementById('password').value;
   if (password.length < 8) {
     formMessage.textContent = '⚠️ Le mot de passe doit contenir au moins 8 caractères.';
@@ -1122,44 +616,64 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
-  // Récupération du plan sélectionné
   const planSelectionne = document.querySelector('input[name="plan"]:checked').value;
-
-  // Données à envoyer
-  const clientData = {
-    prenom: document.getElementById('prenom').value.trim(),
-    nom: document.getElementById('nom').value.trim(),
-    email: document.getElementById('email').value.trim().toLowerCase(),
-    password: document.getElementById('password').value,
-    whatsapp: document.getElementById('whatsapp').value.trim(),
-    activite: document.getElementById('activite').value,
-    description: document.getElementById('description').value.trim(),
-    plan: planSelectionne,
-  };
+  const prenomVal = document.getElementById('prenom').value.trim();
+  const nomVal = document.getElementById('nom').value.trim();
+  const emailVal = document.getElementById('email').value.trim().toLowerCase();
+  const whatsappVal = document.getElementById('whatsapp').value.trim();
+  const activiteVal = document.getElementById('activite').value;
+  const descriptionVal = document.getElementById('description').value.trim();
 
   // État loading
   submitBtn.disabled = true;
   submitBtn.innerHTML = '<span class="spinner"></span>Création du compte...';
 
   try {
-    const result = await inscrireClient(clientData);
-    if (result.success) {
-      const isDemoMsg = result.demo
-        ? ' (Mode démo — connectez votre base de données pour activer)'
-        : '';
-      formMessage.textContent = `✅ Compte créé avec succès ! Notre équipe vous contacte sur WhatsApp sous 24h.${isDemoMsg}`;
-      formMessage.className = 'form-message success';
-      form.reset();
-      document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
-      document.querySelector('.plan-option').classList.add('selected');
+    // Hashage du mot de passe
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Insertion dans Supabase
+    const { error } = await supabaseClient.from('clients').insert([{
+      prenom: prenomVal,
+      nom: nomVal,
+      email: emailVal,
+      password: hashedPassword,
+      whatsapp: whatsappVal,
+      activite: activiteVal,
+      description: descriptionVal,
+      plan: planSelectionne,
+      statut: 'en_attente',
+      date_inscription: new Date().toISOString()
+    }]);
+
+    if (error) {
+      if (error.code === '23505') {
+        formMessage.textContent = '❌ Cette adresse email est déjà utilisée. Veuillez en utiliser une autre.';
+      } else {
+        formMessage.textContent = '❌ Une erreur est survenue : ' + error.message;
+      }
+      formMessage.className = 'form-message error';
+      return;
     }
+
+    // Succès — réinitialiser le formulaire
+    form.reset();
+    document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
+    document.querySelector('.plan-option').classList.add('selected');
+
+    // Afficher la modal de félicitations
+    afficherSucces();
+
   } catch (err) {
-    formMessage.textContent = `❌ ${err.message || 'Une erreur est survenue. Réessayez ou contactez-nous sur WhatsApp.'}`;
+    formMessage.textContent = '❌ Erreur inattendue. Veuillez réessayer ou nous contacter sur WhatsApp.';
     formMessage.className = 'form-message error';
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = 'Créer mon compte';
-    formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (formMessage.classList.contains('error')) {
+      formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 });
 
@@ -1176,6 +690,5 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
-
 </body>
 </html>
