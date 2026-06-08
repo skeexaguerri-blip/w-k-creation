@@ -6,6 +6,7 @@
 <title>W&K Creation — Votre Boutique En Ligne</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
 <style>
   :root {
     --or: #C9A84C; --or-light: #E8C96A; --or-dark: #A07C2E;
@@ -294,38 +295,52 @@
   <div class="reveal">
     <span class="section-tag">Tarifs</span>
     <h2 class="section-title">Transparent.<br>Sans surprise.</h2>
-    <p class="section-sub">Un paiement unique pour la création, puis un abonnement mensuel.</p>
+    <p class="section-sub">Tout inclus dès le premier mois. Création du site + hébergement + gestion dans un seul abonnement mensuel.</p>
   </div>
-  <div class="pricing-grid reveal">
+  <div class="pricing-grid reveal" style="max-width:1100px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
     <div class="pricing-card">
-      <div class="pricing-name">Création du site</div>
-      <div class="pricing-price">150 000 <span>FCFA</span></div>
-      <p class="pricing-desc">Paiement unique — avant le début des travaux</p>
+      <div class="pricing-name">Starter</div>
+      <div class="pricing-price">15 000 <span>FCFA/mois</span></div>
+      <p class="pricing-desc">Pour les revendeuses et entrepreneurs qui démarrent</p>
       <ul class="pricing-features">
-        <li>Site e-commerce complet & personnalisé</li>
-        <li>Catalogue produits illimité</li>
-        <li>Paiement Wave / Orange Money / MTN MoMo</li>
-        <li>Design mobile-first</li>
-        <li>URL personnalisée</li>
+        <li>Création du site incluse</li>
+        <li>Jusqu'à 20 produits</li>
+        <li>Paiement Wave / Orange Money</li>
         <li>Notifications WhatsApp des commandes</li>
-        <li>Tableau de bord vendeur</li>
+        <li>Support WhatsApp sous 24h</li>
+        <li>10 mises à jour produits/mois</li>
       </ul>
+      <a href="#inscription" class="btn-secondary" style="display:block;text-align:center">Choisir Starter</a>
     </div>
     <div class="pricing-card featured">
-      <div class="pricing-badge">Mensuel</div>
-      <div class="pricing-name">Abonnement maintenance</div>
-      <div class="pricing-price">15 000 <span>FCFA/mois</span></div>
-      <p class="pricing-desc">Reconduit automatiquement chaque mois</p>
+      <div class="pricing-badge">Populaire</div>
+      <div class="pricing-name">Pro</div>
+      <div class="pricing-price">25 000 <span>FCFA/mois</span></div>
+      <p class="pricing-desc">Pour les créateurs de contenu et boutiques actives</p>
       <ul class="pricing-features">
-        <li>Hébergement & site en ligne 24h/24</li>
-        <li>10 ajouts de produits par mois</li>
-        <li>Modifications de prix illimitées</li>
-        <li>5 modifications de photos/mois</li>
-        <li>1 modification de design/mois</li>
-        <li>Support WhatsApp sous 24h</li>
-        <li>Corrections de bugs incluses</li>
+        <li>Création du site incluse</li>
+        <li>Produits illimités</li>
+        <li>Paiement Wave / OM / MTN MoMo</li>
+        <li>Tableau de bord vendeur</li>
+        <li>Statistiques de ventes</li>
+        <li>Notifications + relances auto</li>
+        <li>Mises à jour illimitées</li>
       </ul>
-      <a href="#inscription" class="btn-primary" style="display:block;text-align:center">Commencer maintenant</a>
+      <a href="#inscription" class="btn-primary" style="display:block;text-align:center">Choisir Pro</a>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-name">Business</div>
+      <div class="pricing-price">45 000 <span>FCFA/mois</span></div>
+      <p class="pricing-desc">Pour les boutiques établies à fort volume</p>
+      <ul class="pricing-features">
+        <li>Tout le plan Pro</li>
+        <li>Multi-boutiques</li>
+        <li>Rapport mensuel PDF</li>
+        <li>Domaine .ci personnalisé inclus</li>
+        <li>Priorité support (réponse 6h)</li>
+        <li>Accompagnement stratégie vente</li>
+      </ul>
+      <a href="#inscription" class="btn-secondary" style="display:block;text-align:center">Choisir Business</a>
     </div>
   </div>
 </section>
@@ -341,17 +356,25 @@
   <div class="form-wrapper reveal">
     <div style="margin-bottom:24px">
       <label style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--gris);font-weight:500;display:block;margin-bottom:12px">Choisissez votre plan</label>
-      <div class="plan-select">
+      <div class="plan-select" style="grid-template-columns:repeat(3,1fr)">
         <label class="plan-option selected" id="opt1">
-          <input type="radio" name="plan" value="creation_abonnement" checked>
-          <div class="plan-option-name">Création + Abonnement</div>
-          <div class="plan-option-price">150 000 <small>FCFA + 15 000/mois</small></div>
-        </label>
-        <label class="plan-option" id="opt2">
-          <input type="radio" name="plan" value="abonnement_seul">
-          <div class="plan-option-name">Abonnement seul</div>
+          <input type="radio" name="plan" value="starter" data-price="15000" checked>
+          <div class="plan-option-name">Starter</div>
           <div class="plan-option-price">15 000 <small>FCFA/mois</small></div>
         </label>
+        <label class="plan-option" id="opt2">
+          <input type="radio" name="plan" value="pro" data-price="25000">
+          <div class="plan-option-name">Pro</div>
+          <div class="plan-option-price">25 000 <small>FCFA/mois</small></div>
+        </label>
+        <label class="plan-option" id="opt3">
+          <input type="radio" name="plan" value="business" data-price="45000">
+          <div class="plan-option-name">Business</div>
+          <div class="plan-option-price">45 000 <small>FCFA/mois</small></div>
+        </label>
+      </div>
+      <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:14px 18px;margin-top:12px;font-size:0.85rem;color:var(--gris)">
+        💳 Un premier mois d'abonnement sera prélevé au moment de l'inscription pour démarrer la création de votre boutique.
       </div>
     </div>
     <form id="myForm">
@@ -404,8 +427,7 @@
   <div class="footer-col">
     <h4>Contact</h4>
     <ul>
-      <li>📱 WhatsApp : +225 07
-         78 54 53 26</li>
+      <li>📱 WhatsApp : +225 78 54 53 26</li>
       <li>📧 wnkcreation@gmail.com</li>
       <li>📍 Abidjan, Côte d'Ivoire</li>
     </ul>
@@ -421,7 +443,7 @@
 const { createClient } = supabase;
 const db = createClient(
   'https://upaewkcazpvidzlwfttj.supabase.co',
-  'sb_publishable_PQhMtUDu_UL0C8c3BtBXdQ_Cr01Oqsj'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwYWV3a2NhenB2aWR6bHdmdHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NzM3NTUsImV4cCI6MjA5NjM0OTc1NX0.7OfIH8gLg3sv4t6INFSap76_KN2Xixm39fDjAlh7X74'
 );
 
 // UTILITAIRES
