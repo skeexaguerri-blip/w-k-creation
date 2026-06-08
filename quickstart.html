@@ -1,0 +1,295 @@
+<!-- QUICKSTART - Démarrage rapide W&K Creation -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Start — W&K Creation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --or: #C9A84C; --or-light: #E8C96A; --or-dark: #A07C2E;
+      --noir: #0D0D0D; --noir2: #141414; --noir3: #1E1E1E;
+      --blanc: #F5F0E8; --gris: #888; --gris2: #555;
+      --rouge: #E05252; --vert: #4CAF7D;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--noir); color: var(--blanc); font-family: 'DM Sans', sans-serif; padding: 60px 20px; line-height: 1.6; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 20px; color: var(--or); }
+    h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-top: 40px; margin-bottom: 16px; color: var(--or); }
+    h3 { font-size: 1.2rem; margin-top: 24px; margin-bottom: 12px; }
+    p, li { color: var(--gris); margin-bottom: 12px; }
+    a { color: var(--or); text-decoration: none; }
+    a:hover { color: var(--or-light); }
+    
+    .steps { background: var(--noir2); border: 1px solid rgba(201,168,76,0.2); padding: 24px; margin: 24px 0; border-radius: 4px; }
+    .step { margin-bottom: 20px; padding-left: 30px; position: relative; }
+    .step::before { content: attr(data-num); position: absolute; left: 0; background: var(--or); color: var(--noir); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+    
+    .code { background: var(--noir3); border: 1px solid rgba(201,168,76,0.1); padding: 16px; margin: 12px 0; border-left: 3px solid var(--or); font-family: 'Courier New', monospace; font-size: 0.9rem; overflow-x: auto; }
+    
+    .btn { display: inline-block; background: var(--or); color: var(--noir); padding: 12px 24px; text-decoration: none; font-weight: 700; margin: 8px 8px 8px 0; border-radius: 2px; }
+    .btn:hover { background: var(--or-light); }
+    .btn-alt { background: transparent; color: var(--or); border: 1px solid var(--or); }
+    .btn-alt:hover { background: rgba(201,168,76,0.1); }
+    
+    .warning { background: rgba(201,168,76,0.12); border-left: 4px solid var(--or); padding: 16px; margin: 16px 0; }
+    .success { background: rgba(76,175,125,0.12); border-left: 4px solid var(--vert); padding: 16px; margin: 16px 0; }
+    .error { background: rgba(224,82,82,0.12); border-left: 4px solid var(--rouge); padding: 16px; margin: 16px 0; }
+    
+    .timeline { border-left: 2px solid var(--or); padding-left: 30px; }
+    .timeline-item { margin-bottom: 20px; position: relative; }
+    .timeline-item::before { content: '●'; position: absolute; left: -37px; color: var(--or); font-size: 1.5rem; }
+    
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    table th { background: var(--noir2); color: var(--or); padding: 12px; text-align: left; border: 1px solid rgba(201,168,76,0.2); }
+    table td { padding: 12px; border: 1px solid rgba(255,255,255,0.05); }
+    
+    .logo { display: inline-block; font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: var(--or); letter-spacing: 2px; margin-bottom: 30px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">W&K <span style="color:var(--blanc)">Creation</span></div>
+    
+    <h1>🚀 Quick Start - Plateforme SaaS</h1>
+    <p>Guide complet pour démarrer en moins de 5 minutes</p>
+
+    <div class="warning">
+      ⚠️ Vous lisez cette page ? C'est que vous avez les fichiers. Bravo !
+    </div>
+
+    <!-- SECTION 1 : PRÉREQUIS -->
+    <h2>1️⃣ Prérequis</h2>
+    <div class="steps">
+      <div class="step" data-num="1">
+        <strong>Node.js & npm</strong>
+        <p>Télécharger et installer depuis <a href="https://nodejs.org">nodejs.org</a></p>
+        <div class="code">node --version<br>npm --version</div>
+      </div>
+      <div class="step" data-num="2">
+        <strong>Un compte Supabase</strong>
+        <p>Créer sur <a href="https://supabase.com">supabase.com</a> et copier vos clés</p>
+      </div>
+      <div class="step" data-num="3">
+        <strong>Un compte FedaPay (optionnel pour test)</strong>
+        <p>Créer sur <a href="https://fedapay.com">fedapay.com</a> pour tester les paiements</p>
+      </div>
+    </div>
+
+    <!-- SECTION 2 : INSTALLATION -->
+    <h2>2️⃣ Installation (5 min)</h2>
+    <div class="steps">
+      <div class="step" data-num="1">
+        <strong>Ouvrir un terminal</strong>
+        <p>Naviguer vers le dossier du projet :</p>
+        <div class="code">cd "c:\Users\Zenn\Documents\agence saas"</div>
+      </div>
+      <div class="step" data-num="2">
+        <strong>Installer les dépendances</strong>
+        <div class="code">npm install</div>
+        <p>Cela va installer Express, Supabase, CORS, etc.</p>
+      </div>
+      <div class="step" data-num="3">
+        <strong>Configurer l'environnement</strong>
+        <p>Éditer le fichier <code>.env</code> et remplir :</p>
+        <div class="code">SUPABASE_URL=votre_url<br>SUPABASE_KEY=votre_clé<br>FEDAPAY_SECRET_KEY=votre_clé</div>
+      </div>
+      <div class="step" data-num="4">
+        <strong>Démarrer le serveur</strong>
+        <div class="code">npm start</div>
+        <p>Vous devriez voir : "🚀 Serveur démarré sur http://localhost:3000"</p>
+      </div>
+    </div>
+
+    <!-- SECTION 3 : PREMIER TEST -->
+    <h2>3️⃣ Premier Test (2 min)</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <strong>Ouvrir le navigateur</strong>
+        <p><a href="http://localhost:3000/index.html" target="_blank">http://localhost:3000/index.html</a></p>
+      </div>
+      <div class="timeline-item">
+        <strong>Remplir le formulaire</strong>
+        <p>Données test :</p>
+        <table>
+          <tr><th>Champ</th><th>Valeur</th></tr>
+          <tr><td>Prénom</td><td>Jean</td></tr>
+          <tr><td>Nom</td><td>Dupont</td></tr>
+          <tr><td>Email</td><td>jean@example.com</td></tr>
+          <tr><td>WhatsApp</td><td>+225 07 00 00 00 00</td></tr>
+          <tr><td>Mot de passe</td><td>SecurePass123!</td></tr>
+          <tr><td>Activité</td><td>Mode & Vêtements</td></tr>
+        </table>
+      </div>
+      <div class="timeline-item">
+        <strong>Cocher les CGV</strong>
+        <p>Accepter les conditions générales</p>
+      </div>
+      <div class="timeline-item">
+        <strong>Cliquer "Créer mon compte"</strong>
+        <p>✅ Devrait rediriger vers <code>paiement.html</code></p>
+      </div>
+    </div>
+
+    <!-- SECTION 4 : TESTER LE PAIEMENT -->
+    <h2>4️⃣ Tester le Paiement (2 min)</h2>
+    <div class="success">
+      ✅ Sur la page paiement.html, vous verrez :
+      <ul>
+        <li>Plan : Starter</li>
+        <li>Montant : 15 000 FCFA</li>
+        <li>Email : jean@example.com</li>
+      </ul>
+    </div>
+    <div class="steps">
+      <div class="step" data-num="1">
+        <strong>Cliquer "Payer avec FedaPay"</strong>
+        <p>Le modal FedaPay s'ouvre</p>
+      </div>
+      <div class="step" data-num="2">
+        <strong>Entrer les données de test</strong>
+        <table>
+          <tr><th>Champ</th><th>Valeur</th></tr>
+          <tr><td>Numéro</td><td>9999</td></tr>
+          <tr><td>Code OTP</td><td>1234</td></tr>
+        </table>
+      </div>
+      <div class="step" data-num="3">
+        <strong>Valider</strong>
+        <p>✅ Paiement confirmé → Redirection vers confirmation.html</p>
+      </div>
+    </div>
+
+    <!-- SECTION 5 : VÉRIFIER LES DONNÉES -->
+    <h2>5️⃣ Vérifier les Données</h2>
+    <div class="steps">
+      <div class="step" data-num="1">
+        <strong>Ouvrir Supabase</strong>
+        <p>Dashboard → SQL Editor</p>
+      </div>
+      <div class="step" data-num="2">
+        <strong>Exécuter la requête</strong>
+        <div class="code">SELECT * FROM clients WHERE email = 'jean@example.com';</div>
+        <p>Vous devriez voir :</p>
+        <table>
+          <tr><th>Colonne</th><th>Valeur</th></tr>
+          <tr><td>statut</td><td><strong style="color:var(--vert)">actif</strong> ✅</td></tr>
+          <tr><td>transaction_id</td><td>txn_xxxxx</td></tr>
+          <tr><td>amount_paid</td><td>15000</td></tr>
+          <tr><td>payment_date</td><td>[Maintenant]</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 6 : PAGES DISPONIBLES -->
+    <h2>6️⃣ Pages Disponibles</h2>
+    <table>
+      <tr>
+        <th>Page</th>
+        <th>URL</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>Accueil + Inscription</td>
+        <td><a href="http://localhost:3000/index.html">/index.html</a></td>
+        <td>Page principale avec formulaire</td>
+      </tr>
+      <tr>
+        <td>Paiement</td>
+        <td>/paiement.html</td>
+        <td>Page de paiement FedaPay</td>
+      </tr>
+      <tr>
+        <td>Confirmation</td>
+        <td>/confirmation.html</td>
+        <td>Message de succès</td>
+      </tr>
+      <tr>
+        <td>Historique</td>
+        <td><a href="http://localhost:3000/historique.html">/historique.html</a></td>
+        <td>Historique des paiements</td>
+      </tr>
+    </table>
+
+    <!-- SECTION 7 : API DISPONIBLES -->
+    <h2>7️⃣ API Disponibles</h2>
+    <table>
+      <tr>
+        <th>Méthode</th>
+        <th>Endpoint</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/api/create-transaction</td>
+        <td>Crée une transaction FedaPay</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/webhook/fedapay</td>
+        <td>Reçoit les confirmations FedaPay</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/paiements/:email</td>
+        <td>Récupère l'historique de paiement</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/api/test-webhook</td>
+        <td>Teste le webhook (dev)</td>
+      </tr>
+    </table>
+
+    <!-- SECTION 8 : DÉPANNAGE -->
+    <h2>8️⃣ Dépannage</h2>
+    <div class="error">
+      ❌ "Cannot GET /index.html"
+    </div>
+    <p>→ Vous utilisez <code>file://</code> au lieu de <code>http://</code></p>
+    <p>✅ Solution : Utiliser <code>http://localhost:3000/index.html</code></p>
+
+    <div class="error">
+      ❌ "CORS policy error"
+    </div>
+    <p>→ Les requêtes frontend→backend sont bloquées</p>
+    <p>✅ Solution : Vérifier que le serveur tourne (npm start) et que API_BASE_URL est correct</p>
+
+    <div class="error">
+      ❌ "Database connection failed"
+    </div>
+    <p>→ Les clés Supabase sont invalides</p>
+    <p>✅ Solution : Vérifier <code>.env</code> et copier les bonnes clés</p>
+
+    <!-- SECTION 9 : PROCHAINES ÉTAPES -->
+    <h2>9️⃣ Prochaines Étapes</h2>
+    <ul>
+      <li>✅ Lire <strong><a href="README.md">README.md</a></strong> pour guide complet</li>
+      <li>✅ Lire <strong><a href="TESTS.md">TESTS.md</a></strong> pour tous les tests</li>
+      <li>✅ Lire <strong><a href="INTEGRATION.md">INTEGRATION.md</a></strong> pour détails techniques</li>
+      <li>✅ Configurer les <strong>vraies clés FedaPay</strong> en production</li>
+      <li>✅ Ajouter les <strong>webhooks FedaPay</strong> en production</li>
+      <li>✅ Mettre en place <strong>HTTPS</strong> en production</li>
+      <li>✅ Hasher les <strong>mots de passe</strong> en production</li>
+    </ul>
+
+    <!-- SECTION 10 : LIENS UTILES -->
+    <h2>🔗 Liens Utiles</h2>
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+      <a href="https://supabase.com/docs" class="btn btn-alt" target="_blank">📚 Docs Supabase</a>
+      <a href="https://docs.fedapay.com" class="btn btn-alt" target="_blank">📚 Docs FedaPay</a>
+      <a href="https://expressjs.com" class="btn btn-alt" target="_blank">📚 Docs Express</a>
+      <a href="https://nodejs.org" class="btn btn-alt" target="_blank">📚 Node.js</a>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--gris); font-size: 0.9rem;">
+      <p>W&K Creation © 2025 • Plateforme SaaS e-commerce</p>
+      <p>Questions ? <a href="#">Contactez-nous sur WhatsApp</a></p>
+    </div>
+  </div>
+</body>
+</html>

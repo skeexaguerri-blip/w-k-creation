@@ -553,11 +553,17 @@ document.getElementById('submitBtn').addEventListener('click', async function() 
         showMsg('❌ Erreur : ' + error.message, 'error');
       }
     } else {
-      // Succès
-      document.getElementById('myForm').reset();
-      document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
-      document.getElementById('opt1').classList.add('selected');
-      showSuccess();
+      // Succès - Rediriger vers page paiement
+      const clientData = {
+        email: email,
+        prenom: prenom,
+        plan: plan,
+        amount: parseFloat(document.querySelector('input[name="plan"]:checked').dataset.price)
+      };
+      // Stocker dans sessionStorage pour la page paiement
+      sessionStorage.setItem('clientData', JSON.stringify(clientData));
+      // Rediriger vers page paiement
+      window.location.href = 'paiement.html';
     }
   } catch(err) {
     showMsg('❌ Erreur inattendue. Contactez-nous sur WhatsApp.', 'error');
